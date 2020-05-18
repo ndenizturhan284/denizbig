@@ -26,7 +26,7 @@ def violation(partId, records):
     import csv
     reader = csv.reader(records)
     for row in reader:
-        if (row[23].isupper()==False) and  (row[23]!='') and (row[24]!='') and (row[23].split("-")[-1]!='') and (row[21]!='') and (row[4].split("/")[-1] in ["2015", "2016", "2017", "2018", "2019"]):
+        if (row[23].isupper()==False) and  (row[23]!='') and (row[24]!='') and ((re.sub('[^0-9-]', '', row[23])).split("-")[-1]!='') and ((re.sub('[^0-9-]', '', row[23])).split("-")[0]!='') and (row[21]!='') and (row[4].split("/")[-1] in ["2015", "2016", "2017", "2018", "2019"]):
             if "-" in row[23]:
                 house_num=re.sub('[^0-9-]', '', row[23])
                 house_num=(int(house_num.split("-")[0]), int(house_num.split("-")[-1]))
