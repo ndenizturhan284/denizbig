@@ -122,6 +122,7 @@ def all_ids(partId, records):
 def main(sc1, sc2):
     v1 = sc1.mapPartitionsWithIndex(violation)
     cntr = sc2.mapPartitionsWithIndex(centerline)
+    phid = sc2.mapPartitionsWithIndex(all_ids)
     v1.join(cntr).filter(lambda x: ((x[1][0][0][-1]%2==1 and x[1][0][0] <= x[1][1][2] and x[1][0][0] >= x[1][1][1])                                or (x[1][0][0][-1]%2==0 and x[1][0][0] <= x[1][1][4] and x[1][0][0] >= x[1][1][3]))).map(lambda x: ((x[1][1][0],x[1][0][1]), 1)).reduceByKey(lambda x,y: x+y).map(lambda x: ((x[0][0]), (x[0][1], x[1]))).groupByKey().mapValues(dict).map(put_years).map(regression).union(phid).reduceByKey(lambda x,y: (x[0]+y[0], x[1]+y[1], x[2]+y[2], x[3]+y[3], x[4]+y[4], x[5]+y[5])).map(lambda x: (x[0],x[1][0],x[1][1],x[1][2],x[1][3],x[1][4],x[1][5])).sortBy(lambda x: x[0]).map(do_csv).saveAsTextFile(sys.argv[1])
     
     
