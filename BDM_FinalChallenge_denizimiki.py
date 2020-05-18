@@ -15,10 +15,9 @@ import sys
 
 
 def do_csv(file):
-    output = io.StringIO()
-    writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(file)
-    return output.getvalue().strip('\r\n')
+    output = io.StringIO("")
+    csv.writer(output).writerow(file)
+    return output.getvalue().strip()
 
 def violation(partId, records):
     if partId==0:
